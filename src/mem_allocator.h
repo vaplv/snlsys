@@ -122,6 +122,10 @@ extern struct mem_allocator mem_default_allocator;
  * Proxy allocator.
  *
  ******************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 SYS_API void
 mem_init_proxy_allocator
   (const char* proxy_name,
@@ -131,6 +135,10 @@ mem_init_proxy_allocator
 SYS_API void
 mem_shutdown_proxy_allocator
   (struct mem_allocator* proxy_allocator);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* MEM_ALLOCATOR_H */
 

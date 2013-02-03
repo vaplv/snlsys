@@ -107,6 +107,10 @@ time_add(struct time* res, const struct time* a, const struct time* b)
   }
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 SYS_API int64_t
 time_val
   (const struct time* time,
@@ -119,6 +123,10 @@ time_dump
    size_t* real_dump_len, /* May be NULL. */
    char* dump, /* May be NULL. */
    size_t max_dump_len);
+
+#ifdef __cplusplus
+} /* extern C */
+#endif
 
 #endif /* TIME_H */
 
