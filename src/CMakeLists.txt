@@ -17,10 +17,11 @@ add_definitions(-D_POSIX_C_SOURCE=200809L)
 ################################################################################
 # Define targets
 ################################################################################
-set(SNLSYS_FILES_SRC clock_time.c mem_allocator.c)
+set(SNLSYS_FILES_SRC clock_time.c image.c mem_allocator.c)
 
 set(SNLSYS_FILES_INC
   clock_time.h
+  image.h
   list.h
   math.h
   mem_allocator.h
