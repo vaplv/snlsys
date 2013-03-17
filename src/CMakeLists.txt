@@ -26,6 +26,7 @@ set(SNLSYS_FILES_INC
   math.h
   mem_allocator.h
   ref_count.h
+  signal.h
   snlsys.h)
 
 add_library(snlsys SHARED ${SNLSYS_FILES_SRC} ${SNLSYS_FILES_INC})
@@ -41,6 +42,9 @@ add_test(test_list test_list)
 add_executable(test_mem_allocator test_mem_allocator.c)
 target_link_libraries(test_mem_allocator snlsys)
 add_test(test_mem_allocator test_mem_allocator)
+
+add_executable(test_signal test_signal.c)
+add_test(test_signal test_signal)
 
 ################################################################################
 # Define output & install directories
