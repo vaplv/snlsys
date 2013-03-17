@@ -152,6 +152,8 @@
 #define STR__(x) #x
 #define STR(x) STR__(x)
 
+#define TYPEOF(x) __typeof__(x)
+
 #define UNUSED __attribute__((unused))
 
 #endif /* SNLSYS_H */

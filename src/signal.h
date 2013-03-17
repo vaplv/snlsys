@@ -9,63 +9,57 @@
  * Signal declaration and functions
  *
  ******************************************************************************/
-#define SIGNALS_LIST(Slst, Count)                                              \
+#define SIGNALS_LIST(Slst, ClbkType, Count)                                    \
   struct {                                                                     \
-    struct list_node callbacks_list[(Count)];                                  \
+    ClbkType callbacks_list[(Count)];                                          \
   } Slst
 
 #define SIGNALS_LIST_INIT(Slst)                                                \
   {                                                                            \
     unsigned i = 0;                                                            \
-    for(i=0; i<sizeof((Slst)->callbacks_list)/sizeof(struct list_node); ++i) { \
-      list_init((Slst)->callbacks_list + i);                                   \
+    for(i = 0;                                                                 \
+        i < sizeof((Slst)->callbacks_list) / sizeof((Slst)->callbacks_list[0]);\
+        ++i ) {                                                                \
+      list_init(&(Slst)->callbacks_list[i].node);                              \
     }                                                                          \
-  } (void) 0
+  } (void)0
 
 #define SIGNAL_CONNECT_CALLBACK(Slst, Signal, Clbk)                            \
-  list_add((Slst)->callbacks_list + (Signal), &(Clbk)->node)
+  list_add(&(Slst)->callbacks_list[(Signal)].node, &(Clbk)->node)
 
-#define SIGNAL_INVOKE(Slst, Signal)                                            \
+#define SIGNAL_INVOKE(Slst, Signal, ...)                                       \
   {                                                                            \
     struct list_node* pos = NULL;                                              \
-    LIST_FOR_EACH(pos, (Slst)->callbacks_list + (Signal)) {                    \
-      struct callback* clbk = CONTAINER_OF(pos, struct callback, node);        \
-      clbk->func(clbk->data);                                                  \
+    typedef TYPEOF((Slst)->callbacks_list[0]) ClbkType;                        \
+    LIST_FOR_EACH(pos, &(Slst)->callbacks_list[(Signal)].node) {               \
+      ClbkType* clbk = CONTAINER_OF(pos, ClbkType, node);                      \
+      clbk->func(__VA_ARGS__, clbk->data);                                     \
     }                                                                          \
-  } (void) 0
+  } (void)0
 
 /*******************************************************************************
  *
  * Callback data structure that may be connected to a signal
  *
  ******************************************************************************/
-struct callback {
-  struct list_node node;
-  void (*func)(void* data);
-  void* data;
-};
+#define CALLBACK(Name, ...)                                                    \
+  typedef struct {                                                             \
+    struct list_node node;                                                     \
+    void (*func)(__VA_ARGS__, void* data);                                     \
+    void* data;                                                                \
+  } Name
 
-static FINLINE void
-callback_init(struct callback* clbk)
-{
-  ASSERT(clbk);
-  list_init(&clbk->node);
-}
+#define CALLBACK_INIT(Clbk)                                                    \
+  list_init(&(Clbk)->node)
 
-static FINLINE void
-callback_setup(struct callback* clbk, void (*func)(void* data), void* data)
-{
-  ASSERT(clbk && func);
-  clbk->func = func;
-  clbk->data = data;
-}
+#define CALLBACK_SETUP(Clbk, Func, Data)                                       \
+  {                                                                            \
+    (Clbk)->func = Func;                                                       \
+    (Clbk)->data = Data;                                                       \
+  } (void)0
 
-static FINLINE void
-callback_disconnect(struct callback* clbk)
-{
-  ASSERT(clbk);
-  list_del(&clbk->node);
-}
+#define CALLBACK_DISCONNECT(Clbk)                                              \
+  list_del(&(Clbk)->node)
 
 #endif /* CALLBACK_H */
 
