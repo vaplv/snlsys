@@ -61,13 +61,23 @@ main(int argc, char** argv)
   CALLBACK_SETUP(&clbk1_a, sig1_func, (int[]){2});
   CALLBACK_SETUP(&clbk1_b, sig1_func, (int[]){1});
 
-  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_a);
-  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_b);
-  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_c);
-
   ctxt.sig0_func1_invoked = 0;
   ctxt.sig0_func2_sum = 0;
   ctxt.sig1_func_sum = 0;
+
+  SIGNAL_INVOKE(&slst, SIG0, &ctxt);
+  CHECK(ctxt.sig0_func1_invoked, 0);
+  CHECK(ctxt.sig0_func2_sum, 0);
+  CHECK(ctxt.sig1_func_sum, 0);
+
+  SIGNAL_INVOKE(&slst, SIG1, &ctxt);
+  CHECK(ctxt.sig0_func1_invoked, 0);
+  CHECK(ctxt.sig0_func2_sum, 0);
+  CHECK(ctxt.sig1_func_sum, 0);
+
+  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_a);
+  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_b);
+  SIGNAL_CONNECT_CALLBACK(&slst, SIG0, &clbk0_c);
   SIGNAL_INVOKE(&slst, SIG0, &ctxt);
   CHECK(ctxt.sig0_func1_invoked, 1);
   CHECK(ctxt.sig0_func2_sum, 11);
