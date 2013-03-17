@@ -44,6 +44,7 @@ target_link_libraries(test_mem_allocator snlsys)
 add_test(test_mem_allocator test_mem_allocator)
 
 add_executable(test_signal test_signal.c)
+target_link_libraries(test_signal snlsys)
 add_test(test_signal test_signal)
 
 ################################################################################

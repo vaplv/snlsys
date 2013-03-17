@@ -1,3 +1,4 @@
+#include "mem_allocator.h"
 #include "signal.h"
 
 struct ctxt {
@@ -108,6 +109,8 @@ main(int argc, char** argv)
   CHECK(ctxt.sig0_func1_invoked, 1);
   CHECK(ctxt.sig0_func2_sum, 24);
   CHECK(ctxt.sig1_func_sum, 5);
+
+  CHECK(MEM_ALLOCATED_SIZE(&mem_default_allocator), 0);
 
   return 0;
 }
