@@ -31,7 +31,7 @@ image_ppm_write
     } (void)0
   #define SNPRINTF(b, sz, ...)                                                 \
     {                                                                          \
-      UNUSED const size_t i = snprintf(b, sz, __VA_ARGS__);                    \
+      UNUSED const int i = snprintf(b, sz, __VA_ARGS__);                       \
       if( i >= BUFSIZ ) {                                                      \
         goto error;                                                            \
       }                                                                        \

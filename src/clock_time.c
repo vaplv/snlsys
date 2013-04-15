@@ -53,24 +53,24 @@ time_dump
 
   ASSERT(time && (!max_dump_len || dump));
 
-  #define DUMP(time, suffix) \
-    do { \
-      const int len = snprintf \
-        (dump, available_dump_space, \
-         "%" PRIi64 " %s",time, time > 1 ? suffix "s ": suffix " "); \
-      ASSERT(len >= 0); \
-      if(real_dump_len) { \
-        real_dump_len += len; \
-      } \
-      if((size_t)len < available_dump_space) { \
-        dump += len; \
-        available_dump_space -= len; \
-      } else if(dump) { \
-        dump[available_dump_space] = '\0'; \
-        available_dump_space = 0; \
-        dump = NULL; \
-      } \
-    } while(0)
+  #define DUMP(time, suffix)                                                   \
+    {                                                                          \
+      const int len = snprintf                                                 \
+        (dump, available_dump_space,                                           \
+         "%" PRIi64 " %s",time, time > 1 ? suffix "s ": suffix " ");           \
+      ASSERT(len >= 0);                                                        \
+      if(real_dump_len) {                                                      \
+        real_dump_len += len;                                                  \
+      }                                                                        \
+      if((size_t)len < available_dump_space) {                                 \
+        dump += len;                                                           \
+        available_dump_space -= (size_t)len;                                   \
+      } else if(dump) {                                                        \
+        dump[available_dump_space] = '\0';                                     \
+        available_dump_space = 0;                                              \
+        dump = NULL;                                                           \
+      }                                                                        \
+    } (void) 0
 
   time_nsec = TIME_TO_NSEC__(time);
   if(flag & TIME_DAY) {

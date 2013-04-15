@@ -258,8 +258,8 @@ proxy_aligned_alloc
     return NULL;
 
   mem = (char*)((uintptr_t)node + (uintptr_t)node_header_size);
-  mem[-1] = align & 0xFF;
-  mem[-2] = (align >> 8) & 0xFF;
+  mem[-1] = (char)(align & 0xFF);
+  mem[-2] = (char)((align >> 8) & 0xFF);
   node->next = proxy_data->node_list;
   node->prev = NULL;
   node->filename = filename;
@@ -309,7 +309,7 @@ proxy_free(void* data, void* mem)
     ASSERT(data);
     proxy_data = data;
 
-    alignment = ((char*)mem)[-1] | (((char*)mem)[-2] << 8);
+    alignment = (uintptr_t)(((char*)mem)[-1] | (((char*)mem)[-2] << 8));
     node =
       (void*)((uintptr_t)mem - ALIGN_SIZE(sizeof(struct mem_node), alignment));
 
@@ -345,7 +345,7 @@ proxy_realloc
     uintptr_t node_header_size = 0;
     uintptr_t alignment = 0;
 
-    alignment = ((char*)mem)[-1] | (((char*)mem)[-2] << 8);
+    alignment = (uintptr_t)(((char*)mem)[-1] | (((char*)mem)[-2] << 8));
     node_header_size = ALIGN_SIZE(sizeof(struct mem_node), alignment);
     node = (void*)((uintptr_t)mem - node_header_size);
 
@@ -408,11 +408,11 @@ proxy_dump
          node->fileline,
          node->next ? ".\n" : ".");
       ASSERT(len >= 0);
-      dump_len += len;
+      dump_len += (size_t)len;
 
       if((size_t)len < avaible_dump_space) {
         dump += len;
-        avaible_dump_space -= len;
+        avaible_dump_space -= (size_t)len;
       } else if(dump) {
         dump[avaible_dump_space] = '\0';
         avaible_dump_space = 0;
