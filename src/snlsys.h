@@ -144,10 +144,10 @@
   __attribute__((format(printf, a, b)))
 
 #define IS_MEMORY_OVERLAPPED(d0, sz0, d1, sz1)                                 \
-  (((uintptr_t)(d0) >= (uintptr_t)(d1) &&                                      \
-   (uintptr_t)(d0) < ((uintptr_t)(d1) + (sz1))) ||                             \
-  (((uintptr_t)(d0) + (sz0)) >= (uintptr_t)(d1) &&                             \
-   ((uintptr_t)(d0) + (sz0)) < ((uintptr_t)(d1) + (sz1))))
+  (((intptr_t)(d0) >= (intptr_t)(d1) &&                                        \
+   (intptr_t)(d0) < ((intptr_t)(d1) + (intptr_t)(sz1))) ||                     \
+  (((intptr_t)(d0) + (intptr_t)(sz0)) >= (intptr_t)(d1) &&                     \
+   ((intptr_t)(d0) + (intptr_t)(sz0)) < ((intptr_t)(d1) + (intptr_t)(sz1))))
 
 #define STR__(x) #x
 #define STR(x) STR__(x)

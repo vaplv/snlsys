@@ -10,9 +10,9 @@ extern "C" {
 SNLSYS_API int
 image_ppm_write
   (const char* path,
-   uint32_t width,
-   uint32_t height,
-   uint8_t bytes_per_pixel,
+   int width,
+   int height,
+   int bytes_per_pixel,
    const unsigned char* buffer);
 
 #ifdef __cplusplus

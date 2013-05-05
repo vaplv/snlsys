@@ -5,9 +5,9 @@
 int
 image_ppm_write
   (const char* path,
-   const uint32_t width,
-   const uint32_t height,
-   const uint8_t Bpp,
+   const int width,
+   const int height,
+   const int Bpp,
    const unsigned char* buffer)
 {
   char buf[BUFSIZ];
@@ -41,8 +41,8 @@ image_ppm_write
   FWRITE(fp, buf);
 
   if(Bpp) {
-    const size_t pitch = width * Bpp;
-    size_t x, y;
+    const long pitch = width * Bpp;
+    int x, y;
     for(y = 0; y < height; ++y) {
       const unsigned char* row = buffer + y * pitch;
       for(x = 0; x < width; ++x) {
