@@ -140,6 +140,8 @@
 
 #define COUNTER __COUNTER__
 
+#define FOR_EACH(type, var, start, end) for(type var = start; var<end; ++var)
+
 #define FORMAT_PRINTF(a, b) \
   __attribute__((format(printf, a, b)))
 
